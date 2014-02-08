@@ -49,7 +49,7 @@ const int SHIFT_DOUBLE = 32;
     ULongLong encodedPoint = [self unsignedLongLongValue];
     ULongLong *values = [self splitEncodedInteger:encodedPoint withShift:SHIFT];
     
-    volatile CGPoint point = CGPointMake(values[0], values[1]);
+    /*volatile*/ CGPoint point = CGPointMake(values[0], values[1]);
     
     free(values); //clean up
     
@@ -69,7 +69,7 @@ const int SHIFT_DOUBLE = 32;
     ULongLong encodedPoint = [self unsignedLongLongValue];
     ULongLong *values = [self splitEncodedInteger:encodedPoint withShift:SHIFT];
     
-    volatile CGSize size = CGSizeMake((CGFloat)values[0], (CGFloat)values[1]);
+    /*volatile*/ CGSize size = CGSizeMake((CGFloat)values[0], (CGFloat)values[1]);
     
     free(values); //clean up
     
@@ -94,7 +94,7 @@ const int SHIFT_DOUBLE = 32;
     ULongLong *originVlaues = [self splitEncodedInteger:(ULongLong)values[0] withShift:SHIFT];
     ULongLong *sizeValues = [self splitEncodedInteger:(ULongLong)values[1] withShift:SHIFT];
     
-    volatile CGRect rect = CGRectMake((CGFloat)originVlaues[0], (CGFloat)originVlaues[1], (CGFloat)sizeValues[0], (CGFloat)sizeValues[1]);
+    /*volatile*/ CGRect rect = CGRectMake((CGFloat)originVlaues[0], (CGFloat)originVlaues[1], (CGFloat)sizeValues[0], (CGFloat)sizeValues[1]);
     
     free(values);
     free(originVlaues);
