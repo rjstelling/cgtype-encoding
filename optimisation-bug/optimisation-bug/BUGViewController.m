@@ -37,8 +37,8 @@
     
     //Use the category to encode the numbers
     NSNumber *encodedRect = [NSNumber numberWithRect:CGRectMake(0, 0, 768, 1024)];
-    NSNumber *encodedSize = [NSNumber numberWithSize:CGSizeMake(640, 1136)];
-    NSNumber *encodePoint = [NSNumber numberWithPoint:CGPointMake(222, 666)];
+    NSNumber *encodedSize = [NSNumber numberWithSize:CGSizeMake(688, 944)];
+    NSNumber *encodePoint = [NSNumber numberWithPoint:CGPointMake(40, 40)];
     
     NSLog(@"encodedRect: %@", encodedRect);
     NSLog(@"encodedSize: %@", encodedSize);
@@ -53,10 +53,10 @@
     view.backgroundColor = [UIColor redColor];
     [self.view addSubview:view];
     
-//    NSLog(@"rect: %@", NSStringFromCGRect(rect));
-//    NSLog(@"size: %@", NSStringFromCGSize(size));
-//    NSLog(@"point: %f, %f", point.x, point.y);
-//    
+    NSLog(@"rect: %@", NSStringFromCGRect(rect));
+    NSLog(@"size: %@", NSStringFromCGSize(size));
+    NSLog(@"point: %f, %f", point.x, point.y);
+    
     NSLog(@"DONE");
 }
 
