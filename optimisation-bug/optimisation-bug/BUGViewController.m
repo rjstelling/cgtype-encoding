@@ -35,9 +35,9 @@
     
     [super viewDidLoad];
     
-    CGRect rect;
-    CGSize size;
-    CGPoint point;
+    CGRect rect = CGRectZero, rect2 = CGRectMake(0, 0, 100, 100);
+    CGSize size = CGSizeZero;
+    CGPoint point = CGPointZero;
     
     //Use the category to encode the numbers
     NSNumber *encodedRect = [NSNumber numberWithRect:CGRectMake(0, 0, 768, 1024)];
@@ -58,6 +58,7 @@
     [self.view addSubview:view];
     
     NSLog(@"rect: %@", NSStringFromCGRect(rect));
+    NSLog(@"rect2: %@", NSStringFromCGRect(rect2)); //rect2 is not effected by the category
     NSLog(@"size: %@", NSStringFromCGSize(size));
     NSLog(@"point: %f, %f", point.x, point.y);
     
