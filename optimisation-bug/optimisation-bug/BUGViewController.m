@@ -19,6 +19,10 @@
 
 - (void)viewDidLoad
 {
+#if TARGET_IPHONE_SIMULATOR
+# error This bug is only repoducable if run on an iOS device.
+#endif// TARGET_IPHONE_SIMULATOR
+    
 #ifdef DEBUG
 # warning Compiling with no optmisations, the code should work as expected
     NSLog(@"*** Compiling with no optmisations, the code should work as expected ***");
