@@ -10,6 +10,13 @@
 
 typedef unsigned long long ULongLong;
 
+typedef struct _SplitInteger {
+    
+    ULongLong high;
+    ULongLong low;
+    
+} SplitInteger;
+
 const int SHIFT = 16;
 const int SHIFT_DOUBLE = 32;
 
@@ -24,14 +31,14 @@ const int SHIFT_DOUBLE = 32;
     return encoded;
 }
 
-- (ULongLong *)splitEncodedInteger:(ULongLong)encocedInteger withShift:(int)shiftValue
+- (SplitInteger)splitEncodedInteger:(ULongLong)encocedInteger withShift:(int)shiftValue
 {
-    ULongLong *splitFloats = malloc(sizeof(ULongLong) * 2);
+    SplitInteger split = {0, 0};
     
-    splitFloats[0] = (encocedInteger >> shiftValue);
-    splitFloats[1] = encocedInteger - ((encocedInteger >> shiftValue) << shiftValue);
+    split.high = (encocedInteger >> shiftValue);
+    split.low = encocedInteger - ((encocedInteger >> shiftValue) << shiftValue);
     
-    return splitFloats;
+    return split;
 }
 
 #pragma mark - Public
@@ -47,11 +54,9 @@ const int SHIFT_DOUBLE = 32;
 - (CGPoint)pointValue
 {
     ULongLong encodedPoint = [self unsignedLongLongValue];
-    ULongLong *values = [self splitEncodedInteger:encodedPoint withShift:SHIFT];
+    SplitInteger values = [self splitEncodedInteger:encodedPoint withShift:SHIFT];
     
-    /*volatile*/ CGPoint point = CGPointMake(values[0], values[1]);
-    
-    free(values); //clean up
+    /*volatile*/ CGPoint point = CGPointMake(values.high, values.low);
     
     return point;
 }
@@ -66,12 +71,10 @@ const int SHIFT_DOUBLE = 32;
 
 - (CGSize)sizeValue
 {
-    ULongLong encodedPoint = [self unsignedLongLongValue];
-    ULongLong *values = [self splitEncodedInteger:encodedPoint withShift:SHIFT];
+    ULongLong encodedSize = [self unsignedLongLongValue];
+    SplitInteger values = [self splitEncodedInteger:encodedSize withShift:SHIFT];
     
-    /*volatile*/ CGSize size = CGSizeMake((CGFloat)values[0], (CGFloat)values[1]);
-    
-    free(values); //clean up
+    /*volatile*/ CGSize size = CGSizeMake((CGFloat)values.high, (CGFloat)values.low);
     
     return size;
 }
@@ -90,15 +93,11 @@ const int SHIFT_DOUBLE = 32;
 {
     ULongLong encodedRect = [self unsignedLongLongValue];
     
-    ULongLong *values = [self splitEncodedInteger:encodedRect withShift:SHIFT_DOUBLE];
-    ULongLong *originVlaues = [self splitEncodedInteger:(ULongLong)values[0] withShift:SHIFT];
-    ULongLong *sizeValues = [self splitEncodedInteger:(ULongLong)values[1] withShift:SHIFT];
+    SplitInteger values = [self splitEncodedInteger:encodedRect withShift:SHIFT_DOUBLE];
+    SplitInteger originValues = [self splitEncodedInteger:values.high withShift:SHIFT];
+    SplitInteger sizeValues = [self splitEncodedInteger:values.low withShift:SHIFT];
     
-    /*volatile*/ CGRect rect = CGRectMake((CGFloat)originVlaues[0], (CGFloat)originVlaues[1], (CGFloat)sizeValues[0], (CGFloat)sizeValues[1]);
-    
-    free(values);
-    free(originVlaues);
-    free(sizeValues);
+    /*volatile*/ CGRect rect = CGRectMake((CGFloat)originValues.high, (CGFloat)originValues.low, (CGFloat)sizeValues.high, (CGFloat)sizeValues.low);
     
     return rect;
 }
